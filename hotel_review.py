@@ -97,3 +97,34 @@ sorted_tfidf_index = X_train_vectorized.max(0).toarray()[0].argsort()
 print('Smallest Coefs: \n{} \n'.format(feature_names[sorted_tfidf_index[:10]]))
 print('Largest Coefs: \n{} \n'.format(feature_names[sorted_tfidf_index[:-11:-1]]))
 
+
+##############-----------------------------#########################
+#########################Model-3#################################
+
+
+#using n grams to consider two words together like not good
+#Since it is very different from good
+
+vect = CountVectorizer(min_df = 5, ngram_range = (1,3)).fit(X_train['Review_Text'])
+X_train_vectorized = vect.transform(X_train['Review_Text'])
+len(vect.get_feature_names())
+#since we considered the ngrams the features increased to 6137
+
+model = LogisticRegression()
+model.fit(X_train_vectorized, y_train)
+predictions = model.predict(vect.transform(X_test['Review_Text']))
+cm = confusion_matrix(y_test, predictions)
+#this increased our accuracy to 0.82
+feature_names = np.array(vect.get_feature_names())
+sorted_coef_index = model.coef_[0].argsort()
+#printing most negative and positive words
+print('Smallest Coefs: \n{} \n'.format(feature_names[sorted_coef_index[:10]]))
+print('Largest Coefs: \n{} \n'.format(feature_names[sorted_coef_index[:-11:-1]]))
+
+
+
+##############------------------------###########################
+
+
+
+
