@@ -158,6 +158,22 @@ cm2 = confusion_matrix(y_test, predict1)
 
 
 ##############------------------------###########################
+##############Predicting best and worst hotels and reviews#############
+
+#probab contains the confidence of prediction
+probab = model.predict_proba(vect.transform(X_test['Review_Text']))
+X_test_pred = np.array(X_pre_test)
+
+
+
+sorted_prob = probab[:,2].argsort()
+best_reviews = X_test_pred[sorted_prob[-10:]]
+worst_reviews = X_test_pred[sorted_prob[:10]]
+
+best_hotels = X_test_pred[sorted_prob[-10:]][:,0]
+worst_hotels = X_test_pred[sorted_prob[:10]][:,0]
+
+
 
 
 
